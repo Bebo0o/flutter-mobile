@@ -166,8 +166,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                                     borderRadius: BorderRadius.circular(8.0),
                                     child: Image.network(
                                       category['image'],
-                                      height: 100,
-                                      width: 100,
+                                      height: 200,
+                                      width: 200,
                                       fit: BoxFit.cover,
                                     ),
                                   ),

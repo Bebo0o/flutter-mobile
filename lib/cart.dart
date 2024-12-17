@@ -20,7 +20,7 @@ class CartPage extends StatelessWidget {
               // You can navigate to the cart page, for example:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BestSellingProducts(cart: cart,)), // Replace with your cart page widget
+                MaterialPageRoute(builder: (context) => BestRatedProducts(cart: cart,)), // Replace with your cart page widget
               );
             },
           ),

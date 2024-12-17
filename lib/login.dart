@@ -1,4 +1,5 @@
 import 'package:app/CategoriesPage.dart';
+import 'package:app/CustomerFeedbackScreen.dart';
 import 'package:app/Home.dart';
 import 'package:app/admin.dart';
 import 'package:app/adminPage.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app/forgit_pass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+String emaill ='beboo@gmail.com';
+String passoord='123456';
 
 
 class MyApp extends StatelessWidget {
@@ -191,11 +193,11 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
             children: [
              
 
-            SizedBox(width: 50),
+            SizedBox(width: 150),
           ElevatedButton(
             onPressed:() async{
               try{
-                  await auth.signInWithEmailAndPassword(email: email, password: pass);
+                  var user =await auth.signInWithEmailAndPassword(email: email, password: pass);
                     
                     Navigator.push(
                     context,
@@ -207,6 +209,12 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
                         await prefs.setString('password', _passwordController.text);
                       }
                       print("yes");
+                   if (_emailController==emaill&&_passwordController==passoord)  {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AllOrdersPage()),
+                    );
+                   } 
                     
               }on FirebaseAuthException catch(e)
               {
@@ -275,27 +283,27 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
           child: Text('Sign up'),
           ),
           SizedBox(width: 20),
-          ElevatedButton(
-          onPressed: () {
-            // Navigate to the Second Page
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AllOrdersPage() ),
-            );
-          },
-          child: Text('cwic login'),
-          ),
-          SizedBox(width: 20),
-          ElevatedButton(
-          onPressed: () {
-            // Navigate to the Second Page
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ReportPage() ),
-            );
-          },
-          child: Text('cwic login'),
-          )
+          // ElevatedButton(
+          // onPressed: () {
+          //   // Navigate to the Second Page
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AllOrdersPage() ),
+          //   );
+          // },
+          // child: Text('cwic login'),
+          // ),
+          // SizedBox(width: 20),
+          // ElevatedButton(
+          // onPressed: () {
+          //   // Navigate to the Second Page
+          //   // Navigator.push(
+          //   //   context,
+          //   //   //MaterialPageRoute(builder: (context) => CustomerFeedbackScreen() ),
+          //   // );
+          // },
+          // child: Text('cwic login'),
+          // )
             ],
           )
         ],

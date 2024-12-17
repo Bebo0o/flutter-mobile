@@ -1,122 +1,147 @@
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-// class ProductInfoPage extends StatelessWidget {
-//   final String id;
-//   final String products;
-//    final String description;
+class ProductInfoPage extends StatefulWidget {
+  final Map<String, dynamic> product;
 
+  ProductInfoPage({required this.product});
 
-//   ProductInfoPage({ required this.id,required this.products,required this.description});
+  @override
+  _ProductInfoPageState createState() => _ProductInfoPageState();
+}
 
-//   Future<Map<String, dynamic>> fetchProductDetails() async {
-//     try {
-//       final doc = await FirebaseFirestore.instance
-//           .collection('Category') // Main collection
-//           .doc(id) // Category document
-//           .collection('products') // Subcollection
-//           .doc(products)
-//           .collection('description') // Product document
-//           .doc(description)
-//           .get();
+class _ProductInfoPageState extends State<ProductInfoPage> {
+  final TextEditingController _feedbackController = TextEditingController();
+    double _rating = 0;
 
-//       if (!doc.exists) {
-//         throw Exception('Product not found');
-//       }
+  Future<void> submitFeedback() async {
+    try {
+      await FirebaseFirestore.instance.collection('feedback').add({
+        'image':widget.product['image'],
+        'price':widget.product['price'],
+        'productId': widget.product['id'],
+        'productName': widget.product['Name'],
+        'feedback': _feedbackController.text,
+        'rating': _rating,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
 
-//       return doc.data()!;
-//     } catch (e) {
-//       throw Exception('Error fetching product details: $e');
-//     }
-//   }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Feedback submitted successfully!')),
+      );
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Product Info'),
-//         backgroundColor: Colors.teal,
-//       ),
-//       body: FutureBuilder<Map<String, dynamic>>(
-//         future: fetchProductDetails(),
-//         builder: (context, snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return Center(child: CircularProgressIndicator());
-//           } else if (snapshot.hasError) {
-//             return Center(child: Text('Error: ${snapshot.error}'));
-//           } else if (!snapshot.hasData) {
-//             return Center(child: Text('No product details available.'));
-//           }
+      _feedbackController.clear();
+      setState(() => _rating = 0);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error submitting feedback: $e')),
+      );
+    }
+  }
 
-//           // Product data
-//           final product = snapshot.data!;
-//           final name = product['Name'] ?? 'Unnamed Product';
-//           final image = product['image'] ?? 'assets/default_image.png';
-//           final price = product['price'] ?? 'Not available';
-//           final description = product['description'] ?? 'No description provided.';
+  void openFeedbackDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Submit Feedback'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _feedbackController,
+                decoration: InputDecoration(hintText: 'Enter your feedback'),
+                maxLines: 3,
+              ),
+              SizedBox(height: 10),
+             Row (
+              mainAxisSize: MainAxisSize.min,  // Align stars horizontally in the center
+               children: List.generate(5, (index) {
+                return IconButton (
+                   icon: Icon(
+                    Icons.star,
+                     color: index < _rating ? Colors.orange : Colors.grey,  // Update color based on rating
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _rating = index + 1.0;  // Update rating when a star is clicked
+                    });
+                  },
+                  padding: EdgeInsets.zero,  // Remove any extra padding from IconButton
+                  constraints: BoxConstraints(),  // Avoid any constraints that affect layout
+                );
+              }),
+            ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                submitFeedback();
+                Navigator.pop(context);
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-//           return Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 // Product Image
-//                 Center(
-//                   child: Image.network(
-//                     image,
-//                     height: 250,
-//                     width: 250,
-//                     fit: BoxFit.cover,
-//                   ),
-//                 ),
-//                 SizedBox(height: 16),
-//                 // Product Name
-//                 Text(
-//                   name,
-//                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//                 ),
-//                 SizedBox(height: 8),
-//                 // Product Price
-//                 Text(
-//                   'Price: \$${price.toString()}',
-//                   style: TextStyle(fontSize: 20, color: Colors.grey[700]),
-//                 ),
-//                 SizedBox(height: 16),
-//                 // Product Description
-//                 Text(
-//                   'Description',
-//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-//                 ),
-//                 SizedBox(height: 8),
-//                 Text(
-//                   description,
-//                   style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-//                 ),
-//                 Spacer(),
-//                 // Add to Cart Button
-//                 Center(
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       // Add "Add to Cart" functionality here
-//                       ScaffoldMessenger.of(context).showSnackBar(
-//                         SnackBar(content: Text('$name added to cart!')),
-//                       );
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor: Colors.teal,
-//                       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-//                     ),
-//                     child: Text(
-//                       'Add to Cart',
-//                       style: TextStyle(fontSize: 18),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.product['Name']),
+        backgroundColor: Colors.teal,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Image.network(
+                widget.product['image'],
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              widget.product['Name'],
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Price: \$${widget.product['price']}',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Available Stock: ${widget.product['quantity']}',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Description: ${widget.product['Description']}',
+              style: TextStyle(fontSize: 16),
+            ),
+            Spacer(),
+            Center(
+              child: ElevatedButton.icon(
+                onPressed: openFeedbackDialog,
+                icon: Icon(Icons.feedback),
+                label: Text('Give Feedback'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

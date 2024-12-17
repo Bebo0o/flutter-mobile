@@ -1,4 +1,5 @@
 import 'package:app/admin.dart';
+import 'package:app/feedback_page.dart';
 import 'package:app/transaction.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +78,16 @@ class AllOrdersPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ReportPage()), // Replace with your cart page widget
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.star_border),
+            onPressed: () {
+              //You can navigate to the cart page, for example:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProductFeedbackPage()), // Replace with your cart page widget
               );
             },
           ),
