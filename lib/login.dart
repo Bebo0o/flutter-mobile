@@ -1,16 +1,15 @@
-import 'package:app/CategoriesPage.dart';
-import 'package:app/CustomerFeedbackScreen.dart';
+//import 'package:app/CategoriesPage.dart';
 import 'package:app/Home.dart';
-import 'package:app/admin.dart';
-import 'package:app/adminPage.dart';
+//import 'package:app/admin.dart';
+//import 'package:app/adminPage.dart';
 import 'package:app/sign_up.dart';
-import 'package:app/transaction.dart';
+//import 'package:app/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:app/forgit_pass.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-String emaill ='beboo@gmail.com';
-String passoord='123456';
+// String emaill ='beboo@gmail.com';
+// String passoord='123456';
 
 
 class MyApp extends StatelessWidget {
@@ -197,7 +196,7 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
           ElevatedButton(
             onPressed:() async{
               try{
-                  var user =await auth.signInWithEmailAndPassword(email: email, password: pass);
+                  await auth.signInWithEmailAndPassword(email: email, password: pass);
                     
                     Navigator.push(
                     context,
@@ -209,12 +208,12 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
                         await prefs.setString('password', _passwordController.text);
                       }
                       print("yes");
-                   if (_emailController==emaill&&_passwordController==passoord)  {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AllOrdersPage()),
-                    );
-                   } 
+                  //  if (_emailController==emaill&&_passwordController==passoord)  {
+                  //   Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => AllOrdersPage()),
+                  //   );
+                  //  } 
                     
               }on FirebaseAuthException catch(e)
               {
@@ -322,13 +321,13 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
   
   
 }
-// void _logout(BuildContext context) async {
-//   await FirebaseAuth.instance.signOut();
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   await prefs.remove('email');
-//   await prefs.remove('password');
-//   MaterialPageRoute(builder: (context) => MyApp());
-//   // Navigator.pushReplacementNamed(context, '/login');
-// }
+void _logout(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove('email');
+  await prefs.remove('password');
+  MaterialPageRoute(builder: (context) => MyApp());
+  Navigator.pushReplacementNamed(context, '/login');
+}
 
  

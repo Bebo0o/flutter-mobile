@@ -10,7 +10,7 @@ class Category {
   Category({
     required this.id,
     required this.Name,
-    required this.image,
+    required this.image, 
   });
 
   factory Category.fromFirestore(DocumentSnapshot doc) {

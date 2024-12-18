@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'add_edit_dialog.dart';
 import 'firestore_service.dart';
+//import 'category_service.dart';
 
 class AdminPanel extends StatefulWidget {
   @override
@@ -20,8 +21,7 @@ class _AdminPanelState extends State<AdminPanel> {
       appBar: AppBar(
         title: Text('Admin Panel'),
         backgroundColor: Colors.teal,
-        actions: 
-        [
+        actions: [
           DropdownButton<String>(
             value: _activeCollection,
             items: [
@@ -108,6 +108,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                 onSave: (productData) {
                                   FirestoreService().editProduct(_selectedCategoryId!, product.id, productData);
                                 },
+                                title: 'Edit Product',
                               ),
                             ),
                           ),
@@ -129,8 +130,13 @@ class _AdminPanelState extends State<AdminPanel> {
         onPressed: () => showDialog(
           context: context,
           builder: (context) => AddEditDialog(
-            onSave: (productData) {
-              FirestoreService().addProduct(_selectedCategoryId!, productData);
+            title: _activeCollection == 'Category' ? 'Add Category' : 'Add Product',
+            onSave: (data) {
+              if (_activeCollection == 'Category') {
+                FirestoreService().addCategory(data); // Save category data
+              } else if (_selectedCategoryId != null) {
+                FirestoreService().addProduct(_selectedCategoryId!, data); // Save product data
+              }
             },
           ),
         ),

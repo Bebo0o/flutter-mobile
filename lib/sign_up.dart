@@ -173,7 +173,7 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
             ),
             keyboardType: TextInputType.emailAddress,
           ),
-          SizedBox(height: 7),
+          SizedBox(height: 5),
           TextField(
             controller: _secondName,
             decoration: InputDecoration(
@@ -183,7 +183,7 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
             ),
             keyboardType: TextInputType.emailAddress,
           ),
-          SizedBox(height: 7),
+          SizedBox(height: 5),
           TextField(
             controller: _emailController,
             onChanged: (value) {
@@ -196,7 +196,7 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
             ),
             keyboardType: TextInputType.emailAddress,
           ),
-          SizedBox(height: 7),
+          SizedBox(height: 5),
           TextField(
             controller: _PhonNamber,
             decoration: InputDecoration(
@@ -228,7 +228,7 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
           obscureText:true,
             
           ),
-          SizedBox(height: 7),
+          SizedBox(height: 5),
           TextField(
             controller: _dateController,
             decoration: InputDecoration(
@@ -246,11 +246,11 @@ class _MyTextInputWidgetState extends State<MyTextInputWidget> {
           
           ),
          
-          SizedBox(height: 7),
+          SizedBox(height: 5),
           ElevatedButton(
             onPressed: () async{ 
               try{
-                 var user = await auth.createUserWithEmailAndPassword(email: email, password: pass);
+                 await auth.createUserWithEmailAndPassword(email: email, password: pass);
                 print(email);
                 print(pass);
               }catch (e){

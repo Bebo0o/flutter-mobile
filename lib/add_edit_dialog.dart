@@ -16,7 +16,7 @@ class AddEditDialog extends StatefulWidget {
     this.quantity,
     this.image,
     this.description,
-    required this.onSave,
+    required this.onSave, required String title,
   });
 
   @override

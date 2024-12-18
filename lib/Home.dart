@@ -1,4 +1,5 @@
 // import 'package:app/sign_up.dart';
+import 'package:app/login.dart';
 import 'package:flutter/material.dart';
 import 'CategoriesPage.dart';
 import 'cart.dart'; // Ensure you have a CartPage implemented
@@ -13,29 +14,30 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Navigate to Settings Page (if implemented)
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.help),
-                title: Text('Help'),
-                onTap: () {
-                  Navigator.pop(context);
-                  // Navigate to Help Page (if implemented)
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(Icons.settings),
+              //   title: Text('Settings'),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     // Navigate to Settings Page (if implemented)
+              //   },
+              // ),
+              // ListTile(
+              //   leading: Icon(Icons.help),
+              //   title: Text('Help'),
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     // Navigate to Help Page (if implemented)
+              //   },
+              // ),
               ListTile(
                 leading: Icon(Icons.logout),
                 title: Text('Logout'),
                 onTap: () {
-                  Navigator.pop(context);
-                  // Navigate to Login Page (or replace stack)
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              );
                 },
               ),
             ],

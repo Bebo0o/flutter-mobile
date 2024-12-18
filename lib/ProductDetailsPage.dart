@@ -1,4 +1,4 @@
-import 'package:app/feedback_page.dart';
+// import 'package:app/feedback_page.dart';
 import 'package:app/prodact_info.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -157,7 +157,7 @@ class _ProductDetailsPagState extends State<ProductDetailsPag> {
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
                         product['image'],
-                        height: 220,
+                        height: 200,
                         width: 200,
                         fit: BoxFit.cover,
                       ),
@@ -177,7 +177,7 @@ class _ProductDetailsPagState extends State<ProductDetailsPag> {
                       '\$${product['price'].toStringAsFixed(2)}',
                       style: TextStyle(fontSize: 18, color: Colors.teal),
                       ),
-                      SizedBox(width: 160),
+                      SizedBox(width: 110),
                     Text(
                       product['quantity'] > 0
                           ? 'Stock: ${product['quantity']}'

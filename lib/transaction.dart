@@ -31,7 +31,7 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-  bool _isLoading = true;  // Flag to show loading spinner
+  // bool _isLoading = true;  // Flag to show loading spinner
   late Future<List<List<dynamic>>> _transactions;  // Future to fetch transactions
 
   final TransactionReport transactionReport = TransactionReport();

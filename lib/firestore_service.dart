@@ -31,4 +31,13 @@ class FirestoreService {
       await _firestore.collection('Category').doc(id).delete();
     }
   }
+
+  // Method to add a new category
+  Future<void> addCategory(Map<String, dynamic> categoryData) async {
+    try {
+      await _firestore.collection('Category').add(categoryData);
+    } catch (e) {
+      print('Error adding category: $e');
+    }
+  }
 }
